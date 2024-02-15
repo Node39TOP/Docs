@@ -1,0 +1,82 @@
+#Guide Nulink: Copy and paste ->run
+
+```sudo apt update && apt upgrade -y```
+```sudo apt install tmux git curl -y```
+```tmux new -s nulink```
+```wget https://gethstore.blob.core.windows.net/builds/geth-linux-amd64-1.10.23-d901d853.tar.gz```
+```tar -xvzf geth-linux-amd64-1.10.23-d901d853.tar.gz```
+```cd geth-linux-amd64-1.10.23-d901d853/```
+```./geth account new --keystore ./keystore```
+#Pass: node39
+```Backup info and file UTC
+ex: Hệ thống sẽ tạo ra:
+  + Public address of the key:   0x143788ce589fc62eea59a5c4a495b0b03e7985fe  # Đây chính là VÍ NODE OPERATOR
+  + Path of the secret key file: /root/geth-linux-amd64-1.10.23-d901d853/keystore/UTC--2024-01-06T19-56-64.615513747Z--143788ce589fc62eea59a5c4a495b0231e7985fe```
+
+#Install Docker & pull Nulink
+```apt install docker.io -y```
+```docker pull nulink/nulink:latest```
+```cd && mkdir nulink```
+```cp /root/geth-linux-amd64-1.10.23-d901d853/keystore/* /root/nulink```
+```chmod -R 777 /root/nulink```
+```curl https://sh.rustup.rs -sSf | sh```
+```source "$HOME/.cargo/env"```
+
+#Install python
+```apt install python3-pip -y```
+```apt install python3-virtualenv -y```
+```virtualenv /root/nulink-venv```
+```source /root/nulink-venv/bin/activate```
+```wget https://download.nulink.org/release/core/nulink-0.5.0-py3-none-any.whl```
+```pip install nulink-0.5.0-py3-none-any.whl```
+```source /root/nulink-venv/bin/activate```
+```python -c "import nulink"```
+
+```export NULINK_KEYSTORE_PASSWORD=node39
+export NULINK_OPERATOR_ETH_PASSWORD=node39```
+
+#Edit UTC and Operator address
+#Save 24 seed
+```sudo docker run -it --rm \
+-p 9151:9151 \
+-v /root/nulink:/code \
+-v /root/nulink:/home/circleci/.local/share/nulink \
+-e NULINK_KEYSTORE_PASSWORD \
+nulink/nulink nulink ursula init \
+--signer keystore:///code/UTC--2024-02-15T02-42-18.896120392Z--cb7d98d3ed1cbf862ffecaf9137da8218fa7901e \
+--eth-provider https://data-seed-prebsc-2-s2.binance.org:8545 \
+--network horus \
+--payment-provider https://data-seed-prebsc-2-s2.binance.org:8545 \
+--payment-network bsc_testnet \
+--operator-address 0xcb7D98D3Ed1CbF862FfECAF9137da8218fa7901E \
+--max-gas-price 10000000000```
+
+#Import wallet in metamask
+
+Faucet BNB:
+```https://www.bnbchain.org/en/testnet-faucet```
+
+Faucet NLK:
+```https://dashboard.testnet.nulink.org/staking```
+
+Stake 10 NLK in dashboard
+
+Bond Opera address
+
+Send 0,1 bnb to opera address.
+
+```docker run --restart on-failure -d \
+--name ursula \
+-p 9151:9151 \
+-v /root/nulink:/code \
+-v /root/nulink:/home/circleci/.local/share/nulink \
+-e NULINK_KEYSTORE_PASSWORD \
+-e NULINK_OPERATOR_ETH_PASSWORD \
+nulink/nulink nulink ursula run --no-block-until-ready```
+
+Logs:
+```tmux a-t nulink```
+or
+```docker logs -f ursula```
+
+Done.!
