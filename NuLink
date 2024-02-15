@@ -1,4 +1,4 @@
-#Guide Nulink: Copy and paste ->run
+# Guide Nulink: Copy and paste ->run
 
 ```sudo apt update && apt upgrade -y```
 ```sudo apt install tmux git curl -y```
