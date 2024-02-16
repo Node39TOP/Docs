@@ -7,7 +7,7 @@
 ```tar -xvzf geth-linux-amd64-1.10.23-d901d853.tar.gz```
 ```cd geth-linux-amd64-1.10.23-d901d853/```
 ```./geth account new --keystore ./keystore```
-#Pass: node39
+#Pass: node39password
 ```Backup info and file UTC
 ex: Hệ thống sẽ tạo ra:
   + Public address of the key:   0x143788ce589fc62eea59a5c4a495b0b03e7985fe  # Đây chính là VÍ NODE OPERATOR
@@ -32,8 +32,8 @@ ex: Hệ thống sẽ tạo ra:
 ```source /root/nulink-venv/bin/activate```
 ```python -c "import nulink"```
 
-```export NULINK_KEYSTORE_PASSWORD=node39
-export NULINK_OPERATOR_ETH_PASSWORD=node39```
+```export NULINK_KEYSTORE_PASSWORD=node39password
+export NULINK_OPERATOR_ETH_PASSWORD=node39password```
 
 #Edit UTC and Operator address
 #Save 24 seed
@@ -75,7 +75,7 @@ Send 0,1 bnb to opera address.
 nulink/nulink nulink ursula run --no-block-until-ready```
 
 Logs:
-```tmux a-t nulink```
+```tmux a -t nulink```
 or
 ```docker logs -f ursula```
 
